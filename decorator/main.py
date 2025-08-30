@@ -2,7 +2,6 @@
 # Script principal para probar el patrón Decorator.
 
 from beverages import DarkRoast, Espresso, HouseBlend
-
 from condiments import Caramel, Mocha, Soy, Whip
 
 
@@ -35,6 +34,31 @@ def main():
     beverage4 = Espresso()
     beverage4 = Caramel(beverage4)
     print(f"Pedido 4: {beverage4.get_description()} ${beverage4.cost():.2f}")
+
+    # Pedido 5: HouseBlend con Triple Caramelo (validando múltiples capas del mismo condimento).
+    beverage5 = HouseBlend()
+    beverage5 = Caramel(beverage5)  # Primer Caramelo
+    beverage5 = Caramel(beverage5)  # Segundo Caramelo
+    beverage5 = Caramel(beverage5)  # Tercer Caramelo
+    print(f"Pedido 5: {beverage5.get_description()} ${beverage5.cost():.2f}")
+
+    # Pedido 6: DarkRoast con múltiples condimentos variados.
+    beverage6 = DarkRoast()
+    beverage6 = Soy(beverage6)  # Soja
+    beverage6 = Mocha(beverage6)  # Mocha
+    beverage6 = Caramel(beverage6)  # Caramelo
+    beverage6 = Mocha(beverage6)  # Segundo Mocha
+    beverage6 = Whip(beverage6)  # Crema
+    print(f"Pedido 6: {beverage6.get_description()} ${beverage6.cost():.2f}")
+
+    # Validación manual de cálculos (para verificar que todo funciona correctamente)
+    print("\n--- Validación de cálculos ---")
+    print(
+        f"Pedido 5 esperado: HouseBlend ($0.89) + 3x Caramelo (3x$0.20) = ${0.89 + 3*0.20:.2f}"
+    )
+    print(
+        f"Pedido 6 esperado: DarkRoast ($0.99) + Soja ($0.15) + 2x Mocha (2x$0.20) + Caramelo ($0.20) + Crema ($0.10) = ${0.99 + 0.15 + 2*0.20 + 0.20 + 0.10:.2f}"
+    )
 
 
 if __name__ == "__main__":
