@@ -3,7 +3,7 @@
 
 from abc import ABC, abstractmethod
 
-from beverages import Beverage
+from beverages import Beverage, Size
 
 
 # --- Decorador Abstracto ---
@@ -16,6 +16,18 @@ class CondimentDecorator(Beverage, ABC):
 
     def __init__(self, beverage: Beverage):
         self._beverage = beverage
+
+    def set_size(self, size: Size) -> None:
+        """
+        Propaga la operación de establecer tamaño al componente envuelto.
+        """
+        self._beverage.set_size(size)
+
+    def get_size(self) -> Size:
+        """
+        Delega la consulta de tamaño al componente envuelto.
+        """
+        return self._beverage.get_size()
 
     @abstractmethod
     def get_description(self) -> str:
@@ -50,13 +62,28 @@ class Mocha(CondimentDecorator):
 class Soy(CondimentDecorator):
     """
     Decorador para añadir Soja a una bebida.
+    El costo depende del tamaño de la bebida.
     """
 
     def get_description(self) -> str:
         return self._beverage.get_description() + ", Soja"
 
     def cost(self) -> float:
-        return self._beverage.cost() + 0.15
+        # Costo base de la bebida
+        base_cost = self._beverage.cost()
+
+        # Costo de soja según tamaño
+        size = self._beverage.get_size()
+        if size == Size.TALL:
+            soy_cost = 0.10
+        elif size == Size.GRANDE:
+            soy_cost = 0.15
+        elif size == Size.VENTI:
+            soy_cost = 0.20
+        else:
+            soy_cost = 0.15  # Fallback por si acaso
+
+        return base_cost + soy_cost
 
 
 class Whip(CondimentDecorator):
