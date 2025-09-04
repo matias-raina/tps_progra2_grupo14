@@ -5,6 +5,7 @@ from abc import ABC, abstractmethod
 
 from beverages import Beverage, Size
 
+from utils import calculate_size_based_cost
 
 # --- Decorador Abstracto ---
 class CondimentDecorator(Beverage, ABC):
@@ -44,7 +45,9 @@ class Milk(CondimentDecorator):
         return self._beverage.get_description() + ", Leche"
 
     def cost(self) -> float:
-        return self._beverage.cost() + 0.10
+        size = self._beverage.get_size()
+        milk_cost = calculate_size_based_cost(size, tall_cost=0.10, grande_cost=0.15, venti_cost=0.20)
+        return self._beverage.cost() + milk_cost
 
 
 class Mocha(CondimentDecorator):
@@ -56,7 +59,9 @@ class Mocha(CondimentDecorator):
         return self._beverage.get_description() + ", Mocha"
 
     def cost(self) -> float:
-        return self._beverage.cost() + 0.20
+        size = self._beverage.get_size()
+        mocha_cost = calculate_size_based_cost(size, tall_cost=0.20, grande_cost=0.25, venti_cost=0.30)
+        return self._beverage.cost() + mocha_cost
 
 
 class Soy(CondimentDecorator):
@@ -69,21 +74,9 @@ class Soy(CondimentDecorator):
         return self._beverage.get_description() + ", Soja"
 
     def cost(self) -> float:
-        # Costo base de la bebida
-        base_cost = self._beverage.cost()
-
-        # Costo de soja según tamaño
         size = self._beverage.get_size()
-        if size == Size.TALL:
-            soy_cost = 0.10
-        elif size == Size.GRANDE:
-            soy_cost = 0.15
-        elif size == Size.VENTI:
-            soy_cost = 0.20
-        else:
-            soy_cost = 0.15  # Fallback por si acaso
-
-        return base_cost + soy_cost
+        soy_cost = calculate_size_based_cost(size, tall_cost=0.10, grande_cost=0.15, venti_cost=0.20)
+        return self._beverage.cost() + soy_cost
 
 
 class Whip(CondimentDecorator):
@@ -95,8 +88,9 @@ class Whip(CondimentDecorator):
         return self._beverage.get_description() + ", Crema"
 
     def cost(self) -> float:
-        return self._beverage.cost() + 0.10
-
+        size = self._beverage.get_size()
+        whip_cost = calculate_size_based_cost(size, tall_cost=0.10, grande_cost=0.15, venti_cost=0.20)
+        return self._beverage.cost() + whip_cost
 
 class Caramel(CondimentDecorator):
     """
@@ -107,4 +101,44 @@ class Caramel(CondimentDecorator):
         return self._beverage.get_description() + ", Caramelo"
 
     def cost(self) -> float:
-        return self._beverage.cost() + 0.20
+        size = self._beverage.get_size()
+        caramel_cost = calculate_size_based_cost(size, tall_cost=0.20, grande_cost=0.25, venti_cost=0.30)
+        return self._beverage.cost() + caramel_cost
+
+
+class PrettyDescriptionDecorator(CondimentDecorator):
+    """
+    Decorador que modifica la descripción para agrupar condimentos repetidos.
+    Por ejemplo, convierte "Mocha, Mocha, Whip" en "Double Mocha, Whip".
+    """
+
+    def get_description(self) -> str:
+        # Obtén la descripción original
+        original_description = self._beverage.get_description()
+
+        # Divide los condimentos en una lista
+        items = original_description.split(", ")
+
+        # Cuenta las repeticiones de cada condimento
+        counts = {}
+        for item in items:
+            counts[item] = counts.get(item, 0) + 1
+
+        # Reconstruye la descripción agrupando repeticiones
+        grouped_description = []
+        for item, count in counts.items():
+            if count == 1:
+                grouped_description.append(item)
+            elif count == 2:
+                grouped_description.append(f"Double {item}")
+            elif count == 3:
+                grouped_description.append(f"Triple {item}")
+            else:
+                grouped_description.append(f"{count}x {item}")
+
+        # Une los elementos agrupados en una nueva descripción
+        return ", ".join(grouped_description)
+
+    def cost(self) -> float:
+        # No modifica el costo; delega al componente envuelto
+        return self._beverage.cost()

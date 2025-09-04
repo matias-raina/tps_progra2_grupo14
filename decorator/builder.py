@@ -2,7 +2,7 @@
 # Implementa una función builder/factory para armar bebidas decoradas fácilmente.
 
 from beverages import Beverage, Size, Espresso, DarkRoast, HouseBlend, Decaf
-from condiments import Milk, Mocha, Soy, Whip, Caramel
+from condiments import Milk, Mocha, Soy, Whip, Caramel, PrettyDescriptionDecorator
 
 # Mapeo de nombres de base y condimentos a clases
 BASES = {
@@ -45,4 +45,4 @@ def build_beverage(base: str, size: str = "tall", condiments: list = None) -> Be
             if not cond_cls:
                 raise ValueError(f"Condimento desconocido: {cond}")
             beverage = cond_cls(beverage)
-    return beverage
+    return PrettyDescriptionDecorator(beverage)
