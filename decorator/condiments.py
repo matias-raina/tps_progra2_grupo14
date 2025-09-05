@@ -2,10 +2,11 @@
 # Contiene el Decorador Abstracto y los Decoradores Concretos.
 
 from abc import ABC, abstractmethod
+from decimal import Decimal
 
 from beverages import Beverage, Size
-
 from utils import calculate_size_based_cost
+
 
 # --- Decorador Abstracto ---
 class CondimentDecorator(Beverage, ABC):
@@ -44,9 +45,9 @@ class Milk(CondimentDecorator):
     def get_description(self) -> str:
         return self._beverage.get_description() + ", Leche"
 
-    def cost(self) -> float:
+    def cost(self) -> Decimal:
         size = self._beverage.get_size()
-        milk_cost = calculate_size_based_cost(size, tall_cost=0.10, grande_cost=0.15, venti_cost=0.20)
+        milk_cost = calculate_size_based_cost(size, "0.10", "0.15", "0.20")
         return self._beverage.cost() + milk_cost
 
 
@@ -58,9 +59,9 @@ class Mocha(CondimentDecorator):
     def get_description(self) -> str:
         return self._beverage.get_description() + ", Mocha"
 
-    def cost(self) -> float:
+    def cost(self) -> Decimal:
         size = self._beverage.get_size()
-        mocha_cost = calculate_size_based_cost(size, tall_cost=0.20, grande_cost=0.25, venti_cost=0.30)
+        mocha_cost = calculate_size_based_cost(size, "0.20", "0.25", "0.30")
         return self._beverage.cost() + mocha_cost
 
 
@@ -73,9 +74,9 @@ class Soy(CondimentDecorator):
     def get_description(self) -> str:
         return self._beverage.get_description() + ", Soja"
 
-    def cost(self) -> float:
+    def cost(self) -> Decimal:
         size = self._beverage.get_size()
-        soy_cost = calculate_size_based_cost(size, tall_cost=0.10, grande_cost=0.15, venti_cost=0.20)
+        soy_cost = calculate_size_based_cost(size, "0.10", "0.15", "0.20")
         return self._beverage.cost() + soy_cost
 
 
@@ -87,10 +88,11 @@ class Whip(CondimentDecorator):
     def get_description(self) -> str:
         return self._beverage.get_description() + ", Crema"
 
-    def cost(self) -> float:
+    def cost(self) -> Decimal:
         size = self._beverage.get_size()
-        whip_cost = calculate_size_based_cost(size, tall_cost=0.10, grande_cost=0.15, venti_cost=0.20)
+        whip_cost = calculate_size_based_cost(size, "0.10", "0.15", "0.20")
         return self._beverage.cost() + whip_cost
+
 
 class Caramel(CondimentDecorator):
     """
@@ -100,9 +102,9 @@ class Caramel(CondimentDecorator):
     def get_description(self) -> str:
         return self._beverage.get_description() + ", Caramelo"
 
-    def cost(self) -> float:
+    def cost(self) -> Decimal:
         size = self._beverage.get_size()
-        caramel_cost = calculate_size_based_cost(size, tall_cost=0.20, grande_cost=0.25, venti_cost=0.30)
+        caramel_cost = calculate_size_based_cost(size, "0.20", "0.25", "0.30")
         return self._beverage.cost() + caramel_cost
 
 
@@ -139,6 +141,6 @@ class PrettyDescriptionDecorator(CondimentDecorator):
         # Une los elementos agrupados en una nueva descripción
         return ", ".join(grouped_description)
 
-    def cost(self) -> float:
+    def cost(self) -> Decimal:
         # No modifica el costo; delega al componente envuelto
         return self._beverage.cost()

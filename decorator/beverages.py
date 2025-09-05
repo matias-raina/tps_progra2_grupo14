@@ -2,6 +2,7 @@
 # Contiene el Componente y los Componentes Concretos del patrón.
 
 from abc import ABC, abstractmethod
+from decimal import Decimal
 from enum import Enum
 
 
@@ -46,10 +47,10 @@ class Beverage(ABC):
         return self._size
 
     @abstractmethod
-    def cost(self) -> float:
+    def cost(self) -> Decimal:
         """
         Método abstracto que las subclases deben implementar para devolver
-        el costo de la bebida.
+        el costo de la bebida como Decimal para precisión monetaria.
         """
         pass
 
@@ -64,8 +65,8 @@ class HouseBlend(Beverage):
         super().__init__()
         self.description = "Café de la Casa"
 
-    def cost(self) -> float:
-        return 0.89
+    def cost(self) -> Decimal:
+        return Decimal("0.89")
 
 
 class DarkRoast(Beverage):
@@ -77,8 +78,8 @@ class DarkRoast(Beverage):
         super().__init__()
         self.description = "Café Dark Roast"
 
-    def cost(self) -> float:
-        return 0.99
+    def cost(self) -> Decimal:
+        return Decimal("0.99")
 
 
 class Decaf(Beverage):
@@ -90,8 +91,8 @@ class Decaf(Beverage):
         super().__init__()
         self.description = "Café Descafeinado"
 
-    def cost(self) -> float:
-        return 1.05
+    def cost(self) -> Decimal:
+        return Decimal("1.05")
 
 
 class Espresso(Beverage):
@@ -103,5 +104,5 @@ class Espresso(Beverage):
         super().__init__()
         self.description = "Espresso"
 
-    def cost(self) -> float:
-        return 1.99
+    def cost(self) -> Decimal:
+        return Decimal("1.99")
