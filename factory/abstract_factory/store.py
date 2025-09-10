@@ -17,8 +17,8 @@ class PizzaStore(ABC):
 
 
 class NYPizzaStore(PizzaStore):
-    def __init__(
-        self): self.factory: PizzaIngredientFactory = NYPizzaIngredientFactory()
+    def __init__(self):
+        self.factory: PizzaIngredientFactory = NYPizzaIngredientFactory()
 
     def create_pizza(self, kind: str) -> Pizza:
         k = kind.lower()
@@ -34,8 +34,8 @@ class NYPizzaStore(PizzaStore):
 
 
 class ChicagoPizzaStore(PizzaStore):
-    def __init__(
-        self): self.factory: PizzaIngredientFactory = ChicagoPizzaIngredientFactory()
+    def __init__(self): 
+        self.factory: PizzaIngredientFactory = ChicagoPizzaIngredientFactory()
 
     def create_pizza(self, kind: str) -> Pizza:
         k = kind.lower()
