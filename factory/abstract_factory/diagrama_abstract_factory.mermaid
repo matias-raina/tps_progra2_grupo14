@@ -1,0 +1,147 @@
+classDiagram
+    class PizzaIngredientFactory {
+        <<abstract>>
+        +create_dough() Dough*
+        +create_sauce() Sauce*
+        +create_cheese() Cheese*
+        +create_clam() Clams*
+        +create_veggies() Veggies*
+        +create_pepperoni() Pepperoni*
+    }
+
+    class NYPizzaIngredientFactory {
+        +create_dough() Dough
+        +create_sauce() Sauce
+        +create_cheese() Cheese
+        +create_clam() Clams
+        +create_veggies() Veggies
+        +create_pepperoni() Pepperoni
+    }
+
+    class ChicagoPizzaIngredientFactory {
+        +create_dough() Dough
+        +create_sauce() Sauce
+        +create_cheese() Cheese
+        +create_clam() Clams
+        +create_veggies() Veggies
+        +create_pepperoni() Pepperoni
+    }
+
+    class Dough {
+        +String name
+        +__init__(name)
+        +__str__() String
+    }
+
+    class Sauce {
+        +String name
+        +__init__(name)
+        +__str__() String
+    }
+
+    class Cheese {
+        +String name
+        +__init__(name)
+        +__str__() String
+    }
+
+    class Clams {
+        +String name
+        +__init__(name)
+        +__str__() String
+    }
+
+    class Veggies {
+        +String name
+        +__init__(name)
+        +__str__() String
+    }
+
+    class Pepperoni {
+        +String name
+        +__init__(name)
+        +__str__() String
+    }
+
+    class Pizza {
+        <<abstract>>
+        +String name
+        +PizzaIngredientFactory f
+        +Dough dough
+        +Sauce sauce
+        +Cheese cheese
+        +Clams clam
+        +Veggies veggies
+        +Pepperoni pepperoni
+        +__init__(name, ing_factory)
+        +prepare()*
+        +bake()
+        +cut()
+        +box()
+        +__str__() String
+    }
+
+    class CheesePizza {
+        +prepare()
+    }
+
+    class ClamPizza {
+        +prepare()
+    }
+
+    class VeggiePizza {
+        +prepare()
+    }
+
+    class PepperoniPizza {
+        +prepare()
+    }
+
+    class PizzaStore {
+        <<abstract>>
+        +order_pizza(kind) Pizza
+        +create_pizza(kind) Pizza*
+    }
+
+    class NYPizzaStore {
+        +PizzaIngredientFactory factory
+        +__init__()
+        +create_pizza(kind) Pizza
+    }
+
+    class ChicagoPizzaStore {
+        +PizzaIngredientFactory factory
+        +__init__()
+        +create_pizza(kind) Pizza
+    }
+
+    PizzaIngredientFactory <|-- NYPizzaIngredientFactory
+    PizzaIngredientFactory <|-- ChicagoPizzaIngredientFactory
+    
+    Pizza <|-- CheesePizza
+    Pizza <|-- ClamPizza
+    Pizza <|-- VeggiePizza
+    Pizza <|-- PepperoniPizza
+
+    PizzaStore <|-- NYPizzaStore
+    PizzaStore <|-- ChicagoPizzaStore
+
+    NYPizzaStore *-- NYPizzaIngredientFactory : uses
+    ChicagoPizzaStore *-- ChicagoPizzaIngredientFactory : uses
+    
+    Pizza *-- PizzaIngredientFactory : uses
+    Pizza o-- Dough : contains
+    Pizza o-- Sauce : contains
+    Pizza o-- Cheese : contains
+    Pizza o-- Clams : contains
+    Pizza o-- Veggies : contains
+    Pizza o-- Pepperoni : contains
+
+    PizzaIngredientFactory ..> Dough : creates
+    PizzaIngredientFactory ..> Sauce : creates
+    PizzaIngredientFactory ..> Cheese : creates
+    PizzaIngredientFactory ..> Clams : creates
+    PizzaIngredientFactory ..> Veggies : creates
+    PizzaIngredientFactory ..> Pepperoni : creates
+
+    PizzaStore ..> Pizza : creates
